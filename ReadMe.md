@@ -79,6 +79,25 @@ wireshark
 ```
 Extra installation step, i.e. **apt-get -f install**, is needed.
 
+#### Example 4: Aware Release 2 (i.e. NAN-R2)
+Mentioned in GSGv10.20.0.
+Assume _WFA sniffer_ package is stored in **~/Downloads** and mapped into **/wfa** in container.
+###### Step 4-1: Build docker image and run docker container.
+```sh
+docker build -f fedora-22-amd64.dockerfile -t nan-r2 . --build-arg UID=$UID --build-arg USER=$USER --build-arg PASSWORD="demonslayer"
+docker run --name nan-r2-inst --privileged=true -v ~/Downloads:/wfa -it -e DISPLAY --net=host -v $XAUTHORITY:/root/.Xauthority nan-r2 bash
+```
+###### Step 4-2: Install WFA sniffer package under container.
+```sh
+cd /
+sudo tar -xvf /wfa/Wi-FiTestSuite_Sniffer-NAN-Linux_v10.2.0.tar.gz
+sudo chmod a+rwx WTSSniffer/
+cd WTSSniffer/
+cd NAN/
+PATH=$PATH:./bin
+wireshark-gtk
+```
+
 ## Conclusion:
 Docker container could be used for _WFA sniffer_ evaluation (especially for Wireshark/tshark); however, extra installation steps different from the guide should be considered, sometimes.
 
