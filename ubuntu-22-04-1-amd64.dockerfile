@@ -21,6 +21,7 @@ RUN cpan install Parallel::ForkManager
 RUN cpan install Linux::Distribution
 RUN cpan install Data::Dump
 RUN cpan install List::Compare
+RUN cpan install String::HexConvert
 RUN useradd -r -m -d /home/$USER -s /bin/bash -g root -g sudo -u $UID $USER
 RUN echo "$USER:$PASSWORD" | chpasswd
 RUN echo "root:$PASSWORD" | chpasswd
