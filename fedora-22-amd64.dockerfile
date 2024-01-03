@@ -4,6 +4,7 @@ ARG UID=9527
 ARG USER=WFA
 ARG PASSWORD="docker"
 ARG DEBIAN_FRONTEND=noninteractive
+ARG INTERPRETER
 
 RUN sed -i -re 's/([a-z]{2}\.)?download.fedoraproject.org\/pub\/fedora/archives.fedoraproject.org\/pub\/archive\/fedora/g' /etc/yum.repos.d/fedora.repo
 RUN sed -i -re 's/#baseurl/baseurl/g' /etc/yum.repos.d/fedora.repo
@@ -16,6 +17,27 @@ RUN yum install xorg-x11-apps -y
 RUN yum install gtk3-devel -y
 RUN yum install wget -y
 RUN yum install tar -y
+
+RUN if [ "$INTERPRETER" = "perl5" ]; then\
+	yum install p7zip p7zip-plugins -y; \
+	yum install perl -y; \
+	yum install make automake gcc gcc-c++ kernel-devel -y; \
+	yum install cpanminus -y; \
+	yum install perl-CPAN -y; \
+	PERL_MM_USE_DEFAULT=1 cpan -i Net::Telnet; \
+	cpanm install Net::hostent; \
+	cpanm install IO::Socket --force; \
+	cpanm install IO::Handle; \
+	cpanm install Digest::HMAC; \
+	cpanm install Digest::SHA; \
+	cpanm install File::stat; \
+	cpanm install Math::BigInt; \
+	cpanm install Data::Dumper; \
+	cpanm install Shell; \
+	cpanm install arybase; \
+	cpanm install Carp; \
+	fi
+
 RUN yum install sudo -y
 
 RUN useradd -r -m -d /home/$USER -s /bin/bash -g root -u $UID $USER
