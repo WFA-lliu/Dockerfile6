@@ -5,7 +5,8 @@ ARG USER=WFA
 ARG PASSWORD="docker"
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update
+RUN apt-get update && apt-get install -y software-properties-common
+RUN add-apt-repository universe && apt-get update
 RUN apt-get install -qqy x11-apps
 RUN apt-get install -qqy sudo
 RUN apt-get install -qqy libtool libtool-bin autoconf flex bison build-essential cmake git
